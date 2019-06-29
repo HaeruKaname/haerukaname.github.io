@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/assets/favicon.ico">
+  
+    
+  <title>设计模式学习：抽象工厂模式 | HaeruKaname&#39;s Blog</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>HaeruKaname's Blog</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>设计模式学习：抽象工厂模式</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年06月29日</time>
+            
+            
+              | 
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#设计模式" class='tag'>设计模式</a>
+
+  <a href="/tags/#创建型模式" class='tag'>创建型模式</a>
+
+
+            
+          </div>
+          <p>抽象工厂（Abstract Factory）属于创建型模式中的对象创建者模式。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>在《设计模式：可复用面向对象软件的基础》中，对于该模式的描述为：</p>
+<blockquote>
+<p>提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。</p>
+</blockquote>
+<p>这看起来有点难懂，来看看<a href="https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82" target="_blank" rel="noopener"><strong>wiki页面</strong></a>对于它的描述：</p>
+<blockquote>
+<p>抽象工厂模式的实质是“提供接口，创建一系列相关或者独立的对象，而不指定这些对象的具体类”。</p>
+</blockquote>
+<h2 id="类图和代码"><a href="#类图和代码" class="headerlink" title="类图和代码"></a>类图和代码</h2><p>看完wiki中的描述后感觉懂一些了，但是显然光靠这些是没办法理解的，所以现在让我们来看一看类图和代码：</p>
+<p><img src="http://www.plantuml.com/plantuml/png/jPAn2eCm48RtUugCxP22cOle2Ptx2cdCK8WAoJcKjkzUGICQJoYK2fBa_Zz_leGh0cbFVUF0E1s2A6-1l3Pq6VxEFyGJnF1TVLVtXafHUQl9nkNXk5HnhUAWlgVKgckDjsIdrEm_iUhdsFJsvvUK6tZEjRKfW95onacWOpdRgIk8iuYHx5lfZ44b0CWVX3i0E0CW2u3PIcSCCq3bxhOb60SXPPwssLAA-4mD0JQTTCgPb-5TANvgKroO-iQ52WhRrdtZFW00" alt="抽象工厂-类图"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProductA</span> &#123;</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteProductA1</span> :</span> <span class="keyword">public</span> ProductA &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ConcreteProductA1() &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"ConcreteProductA1 Created."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteProductA2</span> :</span> <span class="keyword">public</span> ProductA &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ConcreteProductA2() &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"ConcreteProductA2 Created."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProductB</span> &#123;</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteProductB1</span> :</span> <span class="keyword">public</span> ProductB &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ConcreteProductB1() &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"ConcreteProductB1 Created."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteProductB2</span> :</span> <span class="keyword">public</span> ProductB &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ConcreteProductB2() &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"ConcreteProductB2 Created."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AbstractFactory</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ProductA * <span class="title">CreateProductA</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ProductB * <span class="title">CreateProductB</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteFactory1</span> :</span> <span class="keyword">public</span> AbstractFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ProductA * <span class="title">CreateProductA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcreteProductA1();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ProductB * <span class="title">CreateProductB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcreteProductB1();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ConcreteFactory2</span> :</span> <span class="keyword">public</span> AbstractFactory &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ProductA * <span class="title">CreateProductA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcreteProductA2();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> ProductB * <span class="title">CreateProductB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcreteProductB2();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Client() &#123;</span><br><span class="line">        AbstractFactory * cf;</span><br><span class="line">        ProductA * ca;</span><br><span class="line">        ProductB * cb;</span><br><span class="line">		</span><br><span class="line">        cf = <span class="keyword">new</span> ConcreteFactory1();</span><br><span class="line">        ca = cf-&gt;CreateProductA();</span><br><span class="line">        cb = cf-&gt;CreateProductB();</span><br><span class="line">        <span class="keyword">delete</span> cf, ca, cb;</span><br><span class="line"></span><br><span class="line">        cf = <span class="keyword">new</span> ConcreteFactory2();</span><br><span class="line">        ca = cf-&gt;CreateProductA();</span><br><span class="line">        cb = cf-&gt;CreateProductB();</span><br><span class="line">        <span class="keyword">delete</span> cf, ca, cb;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> ** argv)</span> </span>&#123;</span><br><span class="line">    Client * c = <span class="keyword">new</span> Client();</span><br><span class="line">    <span class="comment">/* 运行结果</span></span><br><span class="line"><span class="comment">    ConcreteProductA1 Created.</span></span><br><span class="line"><span class="comment">    ConcreteProductB1 Created.</span></span><br><span class="line"><span class="comment">    ConcreteProductA2 Created.</span></span><br><span class="line"><span class="comment">    ConcreteProductB2 Created.</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">delete</span> c;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码中，我们创建了一个<strong>抽象工厂</strong>，两个<strong>具体工厂</strong>，两种<strong>产品类型</strong>以及每种产品对应具体两种<strong>具体产品</strong>。抽象工厂为产品的创建提供了<strong>接口</strong>，而继承自抽象工厂的具体工厂则实现了这个接口。当我们想要获得某个具体工厂制造的产品（对象）时，我们只需要<code>new</code>对应的具体工厂并调用相应接口即可。</p>
+<p>放到现实生活中来举个例子：很多人都有个制造手办的<strong>想法</strong>（抽象工厂），这个想法是制作<strong>Mea</strong>和<strong>Aqua</strong>的手办（产品类型及对应接口），为了实现这个想法大家制定了两个<strong>计划</strong>（具体工厂）：<strong>计划一</strong>（具体工厂一）是联系手办厂一制作，<strong>计划二</strong>（具体工厂二）是联系手办厂二制作。但是，大家或许有的喜欢计划一，有的喜欢计划二，这种时候每个人就可以按照自己的需要<strong>选择</strong>（new）计划一或者是计划二，然后<strong>执行计划制作</strong>（调用接口）就能得到自己喜欢的手办（具体产品）了。</p>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><p>优点：</p>
+<ul>
+<li>抽象工厂模式可以简单地增加具体工厂：只需要增加具体工厂的实现以及修改选择具体工厂的代码即可。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>难以增加新的产品系列：为此需要修改所有子类将其实现。</li>
+</ul>
+
+        </section>
+    </article>
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类图和代码"><span class="toc-number">2.</span> <span class="toc-text">类图和代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优点和缺点"><span class="toc-number">3.</span> <span class="toc-text">优点和缺点</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2019 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
